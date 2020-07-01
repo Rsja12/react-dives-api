@@ -4,7 +4,7 @@ class ApplicationController < ActionController::API
     before_action :authorized
     
     def encode_token(payload)
-        JWT.encode(payload, ENV[JWT])
+        JWT.encode(payload, ENV['JWT'])
     end
 
     # Anticipate JWT sent along in request headers
@@ -17,10 +17,8 @@ class ApplicationController < ActionController::API
             # headers: { 'Authorization': 'Bearer <token>' }
             token = auth_header.split(' ')[1]
             begin
-                JWT.decode(token, ENV[JWT], true, algorithm: 'HS256')
-            # return nil if we receive an invalid token so that we can keep going and the server doesn't crash
-            # instead of returning a 500 internal server error
-            rescue JWT::DecodeError
+                JWT.decode(token, ENV['JWT'], true, algorithm: 'HS256')
+              rescue JWT::DecodeError
                 nil
             end
         end
