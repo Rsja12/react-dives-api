@@ -1,4 +1,4 @@
-class Api::V1::DivesitesController < ApplicationController
+class Api::V1::DivelogsController < ApplicationController
 
     def index
         if logged_in?
