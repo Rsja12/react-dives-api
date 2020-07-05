@@ -1,0 +1,2 @@
+class Divelog < ApplicationRecord
+end
