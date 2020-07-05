@@ -2,8 +2,9 @@ class Api::V1::DivelogsController < ApplicationController
 
     def index
         if logged_in?
-          @secrets = current_user.secrets
-          render json: @secrets, status: :ok
+          @divelogs = current_user.divelogs
+          # byebug
+          render json: @divelogs, status: :ok
         else
           render json: { error: 'not logged in', status: :unauthorized }
         end
