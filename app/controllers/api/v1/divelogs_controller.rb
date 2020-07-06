@@ -8,5 +8,6 @@ class Api::V1::DivelogsController < ApplicationController
           render json: { error: 'not logged in', status: :unauthorized }
         end
     end
+
     
 end
