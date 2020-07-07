@@ -39,6 +39,15 @@ class Api::V1::DivelogsController < ApplicationController
     end
   end
 
+  def destroy
+    if logged_in?
+      @divelog = Divelog.find_by(id: params[:id])
+      @divelog.destroy
+    else
+      render json: { error: 'you are not authenticated for this request', status: :unauthorized }
+    end
+  end
+
   private
 
   def divelog_params
