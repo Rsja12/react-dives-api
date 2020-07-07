@@ -21,6 +21,22 @@ class Api::V1::DivelogsController < ApplicationController
   end
 
   def show
+    if logged_in?
+      @divelog = Divelog.find_by(id: params[:id])
+      render json: @divelog
+    else
+      render json: { error: 'you are not authenticated for this request', status: :unauthorized }
+    end
+  end
+
+  def update
+    if logged_in?
+      @divelog = Divelog.find_by(id: params[:id])
+      @divelog.update(divelog_params)
+      render json: @divelog
+    else
+      render json: { error: 'you are not authenticated for this request', status: :unauthorized }
+    end
   end
 
   private
