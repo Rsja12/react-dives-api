@@ -1,7 +1,5 @@
 class Api::V1::DivelogsController < ApplicationController
 
-  # skip_before_action :authorized
-
   def index
     if logged_in?
       @divelogs = current_user.divelogs 
@@ -22,7 +20,7 @@ class Api::V1::DivelogsController < ApplicationController
 
   def show
     if logged_in?
-      @divelog = Divelog.find_by(id: params[:id])
+      @divelog = current_user.divelogs.find_by(id: params[:id])
       render json: @divelog
     else
       render json: { error: 'you are not authenticated for this request', status: :unauthorized }
@@ -31,7 +29,7 @@ class Api::V1::DivelogsController < ApplicationController
 
   def update
     if logged_in?
-      @divelog = Divelog.find_by(id: params[:id])
+      @divelog = current_user.divelogs.find_by(id: params[:id])
       @divelog.update(divelog_params)
       render json: @divelog
     else
@@ -41,7 +39,7 @@ class Api::V1::DivelogsController < ApplicationController
 
   def destroy
     if logged_in?
-      @divelog = Divelog.find_by(id: params[:id])
+      @divelog = current_user.divelogs.find_by(id: params[:id])
       @divelog.destroy
     else
       render json: { error: 'you are not authenticated for this request', status: :unauthorized }
