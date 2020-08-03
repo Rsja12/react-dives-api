@@ -3,12 +3,9 @@ class Api::V1::UsersController < ApplicationController
     # unlock this action so that users can sign up
     skip_before_action :authorized, only: [:create]
 
-    def profile
-      render json: { user: UserSerializer.new(current_user) }, status: :accepted
-    end
-
     def create
         @user = User.create(user_params)
+        # check if there are any errors on @user object
         if @user.valid?
           # create a token for user
           @token = encode_token(user_id: @user.id)

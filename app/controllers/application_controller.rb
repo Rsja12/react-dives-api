@@ -4,11 +4,14 @@ class ApplicationController < ActionController::API
     before_action :authorized
     
     def encode_token(payload)
+        # encode takes up to 3 args(payload, secret, hash_algo). 
+        # returns jwt as a string
         JWT.encode(payload, ENV['JWT'])
     end
 
     # Anticipate JWT sent along in request headers
     def auth_header
+        # provides access to http headers
         request.headers['Authorization']
     end
 
@@ -17,8 +20,10 @@ class ApplicationController < ActionController::API
             # headers: { 'Authorization': 'Bearer <token>' }
             token = auth_header.split(' ')[1]
             begin
-                JWT.decode(token, ENV['JWT'], true, algorithm: 'HS256')
+                # decoded_token=> [{"user_id"=>2}, {"alg"=>"HS256"}]
+                JWT.decode(token, ENV['JWT'], algorithm: 'HS256')
               rescue JWT::DecodeError
+                # or nil if we can't decode the token
                 nil
             end
         end
@@ -26,8 +31,7 @@ class ApplicationController < ActionController::API
 
     def current_user
         if decoded_token
-            # decoded_token=> [{"user_id"=>2}, {"alg"=>"HS256"}]
-            # or nil if we can't decode the token
+            # grab value of 'user_id' key inside first index
             user_id = decoded_token[0]['user_id']
             @user = User.find_by(id: user_id)
         end
